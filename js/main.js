@@ -21,6 +21,56 @@
 
 */
 
+var app = angular.module('myApp',[]);
+
+angular.module('myApp')
+  .filter('to_trusted', ['$sce', function($sce){
+      return function(text) {
+          return $sce.trustAsHtml(text);
+      };
+  }]);
+    
+app.controller("mainController", function($scope, $http){
+    $scope.results = [];
+    $scope.filterText = null;
+    $scope.availableCategories = [];
+    $scope.categoryFilter = null;
+    $scope.init = function() {
+      
+    $http.jsonp('//spreadsheets.google.com/feeds/list/1JyvFAv4AZD1fc7l_6KoOMHjb4oWTgkYZr7658i4sNTM/od6/public/values?alt=json-in-script' + '&callback=JSON_CALLBACK')
+      .success(function(data) {
+        angular.forEach(data, function(value, index){
+                angular.forEach(value.entry, function(item, index){
+                  var content = item.gsx$value.$t;
+                  switch(item.gsx$key.$t) {
+                    case "full-time":
+                        $scope.fullTime = content;
+                        break;
+                    case "part-time":
+                        $scope.partTime = content;
+                        break;
+                    case "before-after-school":
+                        $scope.beforeAfterSchool = content;
+                        break;
+                    case "occasional-care":
+                        $scope.occasionalCare = content;
+                        break;
+                    case "last-updated":
+                        $scope.lastUpdated = content;
+                        break;
+                    }
+                });
+                
+            });
+            
+        }).error(function(error) {
+ 
+        });
+
+    };
+    
+});
+
 
 (function(){
 	"use strict";
@@ -272,6 +322,18 @@
 
 	/* ==================== 16. fitVids ==================== */
 	$(".responsive-video").fitVids();
+
+	$(document).ready(function(){
+		$('.ajax-popup-link').magnificPopup({
+		  type: 'ajax'
+		});
+		$('.open-kirsten').magnificPopup({
+  			type:'inline',
+		  	midClick: true 
+		});
+	});
+
+
 
 
 })(jQuery);

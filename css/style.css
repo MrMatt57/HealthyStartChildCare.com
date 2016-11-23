@@ -905,7 +905,6 @@ a.arrow-link:hover:before {
 
 /* Typographic logo for the top bar */
 .tb-logo {
-	margin-left: 20px;
 }
 
 .tb-logo h1 {
@@ -1914,4 +1913,87 @@ bottom: -25px;
 .plain-text {
 	font-style: normal !important;
 	font-family: Raleway;
+}
+.about, .work, .services {
+	padding-bottom: 0 !important
+}
+
+.envrionment-sub {
+	margin-top: 75px;
+}
+.font-bump {
+	font-size: 40px;
+}
+
+.border-top-section {
+	border-top: 2px solid #f4f4f4;
+}
+.message-sent {
+	margin-top: 35px;
+}
+.tb-small .healthystartfont-logo {
+	font-family: italianno;
+	text-transform: capitalize !important;
+	font-size: 36px;
+}
+.tb-large .healthystartfont-logo {
+	display:none;
+}
+
+
+@media screen and (min-width: 0px) and (max-width: 640px) {
+  .hide-on-phone { display: none; }   /* hide it elsewhere */
+}
+.bullet {
+	list-style-type: circle;
+	margin-left: 30px;
+}
+
+
+#opening-revised {
+	text-align: center;
+	position: relative;
+	font-size: .9em;
+	line-height: 1.4em;
+	padding-top: 30px;
+}
+
+#services {
+	background: #f4f4f4;
+	padding-top: 100px;
+	padding-bottom: 100px;
+}
+
+#location {
+	background: #f4f4f4;
+	padding-top: 100px;
+}
+
+.white-popup-block {
+	background: #FFF;
+	padding: 20px 30px;
+	text-align: left;
+	max-width: 650px;
+	margin: 40px auto;
+	position: relative;
+}
+.small-print {
+	font-size: .9em;
+	line-height: 1.4em;
+}
+
+.white-popup {
+  position: relative;
+  background: #FFF;
+  padding: 20px;
+  width: auto;
+  max-width: 450px;
+  margin: 20px auto;
+}
+.view-full {
+	font-size: 12px;
+}
+.map {
+  width: 100%    !important;
+  height: 450px
 }
