@@ -1,6 +1,20 @@
-script:
-  - sudo pip install s3cmd
-  - s3cmd sync --delete-removed --exclude '.git/*' -P -M -r ./ s3://preview.healthystartchildcare.com/
+deploy:
+  # Staging environment
+  - provider: script
+    script:
+    - sudo pip install s3cmd
+    - s3cmd sync --delete-removed --exclude '.git/*' -P -M -r ./ s3://preview.healthystartchildcare.com/
+    on:
+      branch: release-staging
+
+  # Production environment
+  - provider: script
+    script:
+    - sudo pip install s3cmd
+    - s3cmd sync --delete-removed --exclude '.git/*' -P -M -r ./ s3://www.healthystartchildcare.com/
+    on:
+      branch: master
+
 notifications:
     email:
         on_failure: always
