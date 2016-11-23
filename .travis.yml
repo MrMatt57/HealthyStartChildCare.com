@@ -3,10 +3,16 @@ script:
 
 deploy:
   # Staging environment
-    provider: script
+  - provider: script
     script: s3cmd sync --delete-removed --encoding=UTF-8 --add-encoding-exts=css,js,html --exclude '.git/*' -P -M -r ./ s3://preview.healthystartchildcare.com/
     on:
       branch: release-staging
+
+  # Staging environment
+   - provider: script
+     script: s3cmd sync --delete-removed --encoding=UTF-8 --add-encoding-exts=css,js,html --exclude '.git/*' -P -M -r ./ s3://www.healthystartchildcare.com/
+     on:
+      branch: master
 
 notifications:
     email:
