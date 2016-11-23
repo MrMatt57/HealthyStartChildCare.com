@@ -9,11 +9,11 @@ deploy:
       branch: release-staging
 
   # Staging environment
-   - provider: script
-     script: s3cmd sync --delete-removed --exclude '.git/*' --preserve -no-mime-magic --guess-mime-type --recursive ./ s3://www.healthystartchildcare.com/
-     on:
+  - provider: script
+    script: s3cmd sync --delete-removed --exclude '.git/*' --preserve -no-mime-magic --guess-mime-type --recursive ./ s3://www.healthystartchildcare.com/
+    on:
       branch: master
-
+      
 notifications:
     email:
         on_failure: always
