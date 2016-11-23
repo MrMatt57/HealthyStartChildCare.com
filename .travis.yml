@@ -10,7 +10,7 @@ deploy:
 
   # Staging environment
   - provider: script
-    script: s3cmd sync --delete-removed --exclude '.git/*' --acl-public --preserve --no-mime-magic --guess-mime-type --recursive ./ s3://www.healthystartchildcare.com/
+    script: s3cmd sync --delete-removed --exclude '.git/*' --acl-public --preserve --no-mime-magic --guess-mime-type --recursive ./ s3://healthystartchildcare.com/
     on:
       branch: master
       
