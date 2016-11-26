@@ -37,7 +37,7 @@ app.controller("mainController", function($scope, $http){
     $scope.categoryFilter = null;
     $scope.init = function() {
       
-    $http.jsonp('//spreadsheets.google.com/feeds/list/1JyvFAv4AZD1fc7l_6KoOMHjb4oWTgkYZr7658i4sNTM/od6/public/values?alt=json-in-script' + '&callback=JSON_CALLBACK')
+    $http.jsonp('//spreadsheets.google.com/feeds/list/1JyvFAv4AZD1fc7l_6KoOMHjb4oWTgkYZr7658i4sNTM/od6/public/values?alt=json-in-script&callback=JSON_CALLBACK')
       .success(function(data) {
         angular.forEach(data, function(value, index){
                 angular.forEach(value.entry, function(item, index){
@@ -142,7 +142,7 @@ app.controller("mainController", function($scope, $http){
 	});
 
 	/* ==================== 08. Services slider ==================== */
-	$(function() {
+	$(function servicesSlider() {
 	 
 		var owl = $(".services-slider");
 		
@@ -166,7 +166,7 @@ app.controller("mainController", function($scope, $http){
 	});
 
 	/* ==================== 09. Employee slider ==================== */
-	$(function() {
+	$(function employeeSlider() {
 	 
 		var owl = $(".employee-slider");
 		
@@ -190,7 +190,7 @@ app.controller("mainController", function($scope, $http){
 	});
 
 	/* ==================== 10. Work slider ==================== */
-	$(function() {
+	$(function workSlider() {
 	 
 		var owl = $(".work-slider");
 		
@@ -250,7 +250,7 @@ app.controller("mainController", function($scope, $http){
 					$('#message').slideDown(300);
 					$('#contactform img.loader').fadeOut(300,function(){$(this).remove()});
 					$('#submit').removeAttr('disabled');
-					if(data.match('success') != null) $('#contactform').slideUp(300);
+					if(data.match('success') !== null) $('#contactform').slideUp(300);
 				}
 			);
 
