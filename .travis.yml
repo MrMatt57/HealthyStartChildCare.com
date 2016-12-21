@@ -8,9 +8,9 @@ deploy:
     on:
       branch: release-staging
 
-  # Staging environment
+  # Production environment
   - provider: script
-    script: s3cmd sync --delete-removed --exclude '.git/*' --acl-public --preserve --no-mime-magic --guess-mime-type --recursive ./ s3://healthystartchildcare.com/
+    script: s3cmd sync --delete-removed --exclude '.git/*' --acl-public --preserve --no-mime-magic --guess-mime-type --recursive ./ s3://healthystartchildcare.com/ && curl \"https://api.keycdn.com/zones/purge/49630.json\" -u $KEYCDN_APIKEY:"
     on:
       branch: master
       
