@@ -75,6 +75,9 @@ function recaptchaCallback() {
     document.getElementById('8c177eaec70a4b6ebdc0daa0ab06c240').value = 'nonEmpty';
 }
 
+function recaptchaExpiredCallback() {
+    document.getElementById('8c177eaec70a4b6ebdc0daa0ab06c240').value = '';
+}
 
 (function(){
 	"use strict";
