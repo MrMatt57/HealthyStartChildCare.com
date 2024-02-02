@@ -18,4 +18,4 @@ jobs:
 
       - name: Deploy to Staging
         if: github.ref == 'refs/heads/release-staging'
-        run: s3cmd sync --delete-removed --exclude '.git/*' --acl-public --preserve --no-mime-magic --guess-mime-type --recursive ./ s3://preview.healthystartchildcare.com/
+        run: s3cmd sync --access_key=${{ secrets.AWS_ACCESS_KEY_ID }} --secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }} --delete-removed --exclude '.git/*' --acl-public --preserve --no-mime-magic --guess-mime-type --recursive ./ s3://preview.healthystartchildcare.com/
