@@ -1,0 +1,25 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install s3cmd
+        run: sudo pip install s3cmd
+
+      - name: Deploy to Production and Purge CDN
+        if: github.ref == 'refs/heads/master'
+        run: |
+          s3cmd sync --access_key=${{ secrets.AWS_ACCESS_KEY_ID }} --secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }} --delete-removed --exclude '.git/*' --acl-public --preserve --no-mime-magic --guess-mime-type --recursive ./ s3://healthystartchildcare.com/
+          curl "https://api.keycdn.com/zones/purge/49630.json" -u ${{ secrets.KEYCDN_APIKEY }}:
+        env:
+          KEYCDN_APIKEY: ${{ secrets.KEYCDN_APIKEY }}
