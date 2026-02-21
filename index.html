@@ -32,13 +32,8 @@
 	<link href='//fonts.googleapis.com/css?family=Italianno' rel='stylesheet' type='text/css'>
 
 	<!-- Essential stylesheets -->
-	<link rel="stylesheet" href="css/lib/font-awesome.min.css">
-	<link rel="stylesheet" href="css/lib/magnific-popup.css">
-	<link rel="stylesheet" href="css/lib/bxslider.css">
-	<link rel="stylesheet" href="css/lib/owl.carousel.css">
-	<link rel="stylesheet" href="css/lib/owl.theme.css">
-	<link rel="stylesheet" href="css/lib/base.css">
-	<link rel="stylesheet" href="css/lib/parsley.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/base.css">
 
 	<!-- The stylesheet -->
 	<link rel="stylesheet" href="css/style.css?v=2">
@@ -299,7 +294,7 @@
 
 		<!-- Work slider -->
 		<div class="row relative">
-			<div class="owlcarousel work-slider">
+			<div class="work-slider">
 
 
 				<!-- Work item -->
@@ -494,7 +489,7 @@
 
 
 	<!-- Services -->
-	<section id="services" class="services section-slider border-top-section" ng-controller="mainController" ng-init="init()">
+	<section id="services" class="services section-slider border-top-section">
 
 
 		<!-- Title -->
@@ -517,7 +512,7 @@
 								<h3>Full Time</h3>
 								<hr>
 								<ul>
-									<li><span ng-bind-html="fullTime | to_trusted"></span></li>
+									<li><span id="pricing-fulltime"></span></li>
 								</ul>
 							</div>
 						</div>
@@ -530,7 +525,7 @@
 								<h3>Part Time</h3>
 								<hr>
 								<ul>
-									<li><span ng-bind-html="partTime | to_trusted"></span></li>
+									<li><span id="pricing-parttime"></span></li>
 								</ul>
 							</div>
 						</div>
@@ -542,7 +537,7 @@
 								<h3>Before and After School</h3>
 								<hr>
 								<ul>
-									<li><span ng-bind-html="beforeAfterSchool | to_trusted"></li>
+									<li><span id="pricing-beforeafter"></span></li>
 								</ul>
 							</div>
 						</div>
@@ -555,13 +550,13 @@
 								<h3>Occasional Care</h3>
 								<hr>
 								<ul>
-									<li><span ng-bind-html="occasionalCare | to_trusted"></span></li>
+									<li><span id="pricing-occasional"></span></li>
 								</ul>
 							</div>
 						</div>
 
 					</div>
-					<div id="opening-revised" ng-show="lastUpdated">Openings last updated {{lastUpdated}}</div>
+					<div id="opening-revised" style="display:none"></div>
 				</div>
 
 			</div>
@@ -677,16 +672,7 @@
 	</footer>
 
 	<!-- Javascript -->
-	<script src="js/lib/jquery.min.js"></script>
-	<script src="js/lib/angular.min.js"></script>
-	<script src="js/lib/retina.min.js"></script>
-	<script src="js/lib/jquery.magnific-popup.min.js"></script>
-	<script src="js/lib/jquery.bxslider.min.js"></script>
-	<script src="js/lib/owl.carousel.min.js"></script>
-	<script src="js/lib/jquery.fitvids.js"></script>
-	<script src="js/lib/jquery.equal.js"></script>
-	<script src="js/lib/parsley.min.js"></script>
-	<script src="js/main.js?v=4"></script>
+	<script src="js/main.js?v=5"></script>
 
 	<script type="text/javascript" >
 		var EhAPI = EhAPI || {}; EhAPI.after_load = function(){

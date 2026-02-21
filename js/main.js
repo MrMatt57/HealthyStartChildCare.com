@@ -1,346 +1,257 @@
-/*
+(function () {
+  "use strict";
 
-	Main.js
+  /* ==================== 01. Menu toggle ==================== */
+  var toggle = document.getElementById("toggle");
+  if (toggle) {
+    toggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
+    document.documentElement.addEventListener("click", function (e) {
+      if (!e.target.classList.contains("toggle")) {
+        toggle.checked = false;
+      }
+    });
+  }
 
-	01. Menu toggle
-	02. Top bar height effect
-	03. Home content slider
-	04. Home background slider
-	05. Home background and content slider
-	06. Quote slider
-	07. Image slider
-	08. Services slider
-	09. Employee slider
-	10. Work slider
-	11. Footer promo
-	12. Contact form
-	13. Scrollto
-	14. Magnific popup
-	15. Equal height
-	16. fitVids
+  /* ==================== 02. Top bar scroll effect ==================== */
+  var topBar = document.querySelector(".top-bar");
+  if (topBar) {
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 100) {
+        topBar.classList.remove("tb-large");
+        topBar.classList.add("tb-small");
+      } else {
+        topBar.classList.remove("tb-small");
+        topBar.classList.add("tb-large");
+      }
+    });
+  }
 
-*/
+  /* ==================== 03. Smooth scroll ==================== */
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest(".scrollto");
+    if (!link) return;
+    var hash = link.getAttribute("href");
+    if (!hash || hash.charAt(0) !== "#") return;
+    var target = document.querySelector(hash);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: "smooth" });
+    history.pushState(null, null, hash);
+  });
 
-var app = angular.module('myApp',[]);
+  /* ==================== 04. Quote slider ==================== */
+  var quoteSlider = document.querySelector(".quote-slider");
+  if (quoteSlider) {
+    var quotes = quoteSlider.querySelectorAll("li");
+    var currentQuote = 0;
+    if (quotes.length > 1) {
+      // Hide all but the first
+      quotes.forEach(function (q, i) {
+        q.style.display = i === 0 ? "" : "none";
+        q.style.opacity = i === 0 ? "1" : "0";
+        q.style.transition = "opacity 0.6s ease";
+      });
+      setInterval(function () {
+        var prev = currentQuote;
+        currentQuote = (currentQuote + 1) % quotes.length;
+        quotes[prev].style.opacity = "0";
+        setTimeout(function () {
+          quotes[prev].style.display = "none";
+          quotes[currentQuote].style.display = "";
+          // Force reflow
+          quotes[currentQuote].offsetHeight;
+          quotes[currentQuote].style.opacity = "1";
+        }, 600);
+      }, 6000);
+    }
+  }
 
-angular.module('myApp')
-  .filter('to_trusted', ['$sce', function($sce){
-      return function(text) {
-          return $sce.trustAsHtml(text);
-      };
-  }]);
-    
-app.controller("mainController", function($scope, $http){
-    $scope.results = [];
-    $scope.filterText = null;
-    $scope.availableCategories = [];
-    $scope.categoryFilter = null;
-    $scope.init = function() {
-      
-    $http.jsonp('//spreadsheets.google.com/feeds/list/1JyvFAv4AZD1fc7l_6KoOMHjb4oWTgkYZr7658i4sNTM/od6/public/values?alt=json-in-script&callback=JSON_CALLBACK')
-      .success(function(data) {
-        angular.forEach(data, function(value, index){
-                angular.forEach(value.entry, function(item, index){
-                  var content = item.gsx$value.$t;
-                  switch(item.gsx$key.$t) {
-                    case "full-time":
-                        $scope.fullTime = content;
-                        break;
-                    case "part-time":
-                        $scope.partTime = content;
-                        break;
-                    case "before-after-school":
-                        $scope.beforeAfterSchool = content;
-                        break;
-                    case "occasional-care":
-                        $scope.occasionalCare = content;
-                        break;
-                    case "last-updated":
-                        $scope.lastUpdated = content;
-                        break;
-                    }
-                });
-                
-            });
-            
-        }).error(function(error) {
- 
+  /* ==================== 05. Photo carousel (scroll-snap) ==================== */
+  var carousel = document.querySelector(".work-slider");
+  if (carousel) {
+    var prevBtn = document.querySelector(".work-prev");
+    var nextBtn = document.querySelector(".work-next");
+    if (prevBtn) {
+      prevBtn.addEventListener("click", function () {
+        carousel.scrollBy({ left: -300, behavior: "smooth" });
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener("click", function () {
+        carousel.scrollBy({ left: 300, behavior: "smooth" });
+      });
+    }
+  }
+
+  /* ==================== 06. Lightbox ==================== */
+  var lightboxOverlay = null;
+  var lightboxImg = null;
+  var lightboxClose = null;
+  var lightboxPrev = null;
+  var lightboxNext = null;
+  var galleryLinks = [];
+  var galleryIndex = 0;
+
+  function createLightbox() {
+    lightboxOverlay = document.createElement("div");
+    lightboxOverlay.className = "lightbox-overlay";
+    lightboxOverlay.innerHTML =
+      '<div class="lightbox-content">' +
+      '<button class="lightbox-close" aria-label="Close">&times;</button>' +
+      '<button class="lightbox-prev" aria-label="Previous">&#8249;</button>' +
+      '<img class="lightbox-img" src="" alt="">' +
+      '<button class="lightbox-next" aria-label="Next">&#8250;</button>' +
+      "</div>";
+    document.body.appendChild(lightboxOverlay);
+    lightboxImg = lightboxOverlay.querySelector(".lightbox-img");
+    lightboxClose = lightboxOverlay.querySelector(".lightbox-close");
+    lightboxPrev = lightboxOverlay.querySelector(".lightbox-prev");
+    lightboxNext = lightboxOverlay.querySelector(".lightbox-next");
+
+    lightboxClose.addEventListener("click", closeLightbox);
+    lightboxOverlay.addEventListener("click", function (e) {
+      if (e.target === lightboxOverlay) closeLightbox();
+    });
+    lightboxPrev.addEventListener("click", function () {
+      galleryIndex =
+        (galleryIndex - 1 + galleryLinks.length) % galleryLinks.length;
+      lightboxImg.src = galleryLinks[galleryIndex].href;
+    });
+    lightboxNext.addEventListener("click", function () {
+      galleryIndex = (galleryIndex + 1) % galleryLinks.length;
+      lightboxImg.src = galleryLinks[galleryIndex].href;
+    });
+    document.addEventListener("keydown", function (e) {
+      if (!lightboxOverlay.classList.contains("active")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") lightboxPrev.click();
+      if (e.key === "ArrowRight") lightboxNext.click();
+    });
+  }
+
+  function openLightbox(index) {
+    if (!lightboxOverlay) createLightbox();
+    galleryIndex = index;
+    lightboxImg.src = galleryLinks[galleryIndex].href;
+    lightboxOverlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    lightboxOverlay.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+
+  // Bind gallery links
+  galleryLinks = Array.prototype.slice.call(
+    document.querySelectorAll(".popup-gallery")
+  );
+  galleryLinks.forEach(function (link, i) {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      openLightbox(i);
+    });
+  });
+
+  /* ==================== 07. Inline popup (Kirsten testimonial) ==================== */
+  var kirstenLinks = document.querySelectorAll(".open-kirsten");
+  var kirstenPopup = document.getElementById("kirsten");
+  if (kirstenLinks.length && kirstenPopup) {
+    kirstenPopup.style.display = "none";
+    kirstenLinks.forEach(function (link) {
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (!lightboxOverlay) createLightbox();
+        lightboxImg.style.display = "none";
+        lightboxPrev.style.display = "none";
+        lightboxNext.style.display = "none";
+        var content = lightboxOverlay.querySelector(".lightbox-content");
+        var existing = content.querySelector(".lightbox-inline");
+        if (existing) existing.remove();
+        var wrapper = document.createElement("div");
+        wrapper.className = "lightbox-inline";
+        wrapper.innerHTML = kirstenPopup.innerHTML;
+        content.appendChild(wrapper);
+        lightboxOverlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+      });
+    });
+  }
+
+  /* ==================== 08. Ajax popup (Sample report) ==================== */
+  var ajaxLinks = document.querySelectorAll(".ajax-popup-link");
+  ajaxLinks.forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      var url = link.getAttribute("href");
+      if (!lightboxOverlay) createLightbox();
+      lightboxImg.style.display = "none";
+      lightboxPrev.style.display = "none";
+      lightboxNext.style.display = "none";
+      var content = lightboxOverlay.querySelector(".lightbox-content");
+      var existing = content.querySelector(".lightbox-inline");
+      if (existing) existing.remove();
+      var wrapper = document.createElement("div");
+      wrapper.className = "lightbox-inline";
+      wrapper.textContent = "Loading...";
+      content.appendChild(wrapper);
+      lightboxOverlay.classList.add("active");
+      document.body.style.overflow = "hidden";
+      fetch(url)
+        .then(function (r) {
+          return r.text();
+        })
+        .then(function (html) {
+          wrapper.innerHTML = html;
+        })
+        .catch(function () {
+          wrapper.textContent = "Failed to load content.";
         });
+    });
+  });
 
-    };
-    
-});
+  /* ==================== 09. Pricing loader ==================== */
+  fetch("data/pricing.json")
+    .then(function (r) {
+      return r.json();
+    })
+    .then(function (data) {
+      var setTextById = function (id, text) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = text;
+      };
+      setTextById("pricing-fulltime", data.fullTime);
+      setTextById("pricing-parttime", data.partTime);
+      setTextById("pricing-beforeafter", data.beforeAfterSchool);
+      setTextById("pricing-occasional", data.occasionalCare);
+      var updated = document.getElementById("opening-revised");
+      if (updated && data.lastUpdated) {
+        updated.textContent = "Openings last updated " + data.lastUpdated;
+        updated.style.display = "";
+      }
+    })
+    .catch(function () {
+      /* silently fail - pricing section just stays empty */
+    });
 
-function recaptchaCallback() {
-    document.getElementById('8c177eaec70a4b6ebdc0daa0ab06c240').value = 'nonEmpty';
-}
-
-function recaptchaExpiredCallback() {
-    document.getElementById('8c177eaec70a4b6ebdc0daa0ab06c240').value = '';
-}
-
-(function(){
-	"use strict";
-
-	/* ==================== 01. Menu toggle ==================== */
-	$(function(){
-		$('#toggle').click(function (e){
-			e.stopPropagation();
-		});
-		$('html').click(function (e){
-			if (!$('.toggle').is($(e.target))){
-				$('#toggle').prop("checked", false);
-			}
-		});
-	});
-
-	/* ==================== 02. Top bar height effect ==================== */
-	$(window).bind("scroll", function() {
-		if ($(this).scrollTop() > 100) {
-			$(".top-bar").removeClass("tb-large").addClass("tb-small");
-		} else {
-			$(".top-bar").removeClass("tb-small").addClass("tb-large");
-		}
-	});
-
-	/* ==================== 03. Home content slider ==================== */
-	$('.home-c-slider').bxSlider({
-		mode: 'horizontal',
-		pager: false,
-		controls: true,
-		nextText: '<i class="bs-right fa fa-angle-right"></i>',
-		prevText: '<i class="bs-left fa fa-angle-left"></i>'
-	});
-
-	/* ==================== 04. Home background slider ==================== */
-	$('.home-bg-slider').bxSlider({
-		mode: 'fade',
-		auto: true,
-		speed: 1000,
-		pager: false,
-		controls: false,
-		nextText: '<i class="bs-right fa fa-angle-right"></i>',
-		prevText: '<i class="bs-left fa fa-angle-left"></i>'
-	});
-
-	/* ==================== 05. Home background and content slider ==================== */
-	$('.home-bgc-slider').bxSlider({
-		mode: 'fade',
-		pager: true,
-		controls: true,
-		nextText: '<i class="bs-right fa fa-angle-right"></i>',
-		prevText: '<i class="bs-left fa fa-angle-left"></i>'
-	});
-
-	/* ==================== 06. Quote slider ==================== */
-	$('.quote-slider').bxSlider({
-		mode: 'horizontal',
-		controls: false,
-		adaptiveHeight: true
-	});
-
-	/* ==================== 07. Image slider ==================== */
-	$('.img-slider').bxSlider({
-		mode: 'fade',
-		pager: true,
-		controls: true,
-		nextText: '<i class="bs-right fa fa-angle-right"></i>',
-		prevText: '<i class="bs-left fa fa-angle-left"></i>'
-	});
-
-	/* ==================== 08. Services slider ==================== */
-	$(function servicesSlider() {
-	 
-		var owl = $(".services-slider");
-		
-		owl.owlCarousel({
-			pagination: false,
-			navigation: false,
-			items: 4,
-			itemsDesktop: [1000,3],
-			itemsTablet: [600,2],
-			itemsMobile: [321,1]
-		});
-		
-		// Custom navigation
-		$(".serv-next").click(function(){
-			owl.trigger('owl.next');
-		})
-		$(".serv-prev").click(function(){
-			owl.trigger('owl.prev');
-		})
-	 
-	});
-
-	/* ==================== 09. Employee slider ==================== */
-	$(function employeeSlider() {
-	 
-		var owl = $(".employee-slider");
-		
-		owl.owlCarousel({
-			pagination: false,
-			navigation: false,
-			items: 4,
-			itemsDesktop: [1000,3],
-			itemsTablet: [600,2],
-			itemsMobile: [321,1]
-		});
-		
-		// Custom navigation
-		$(".emp-next").click(function(){
-			owl.trigger('owl.next');
-		})
-		$(".emp-prev").click(function(){
-			owl.trigger('owl.prev');
-		})
-	 
-	});
-
-	/* ==================== 10. Work slider ==================== */
-	$(function workSlider() {
-	 
-		var owl = $(".work-slider");
-		
-		owl.owlCarousel({
-			pagination: false,
-			navigation: false,
-			items: 3,
-			itemsDesktop: [1000,3],
-			itemsTablet: [600,2],
-			itemsMobile: [321,1]
-		});
-		
-		// Custom navigation
-		$(".work-next").click(function(){
-			owl.trigger('owl.next');
-		})
-		$(".work-prev").click(function(){
-			owl.trigger('owl.prev');
-		})
-	 
-	});
-
-	/* ==================== 11. Footer promo ==================== */
-	$('.promo-control').click(function () {
-		$('.footer-promo').slideToggle(500);
-		if($('.footer-promo').is(':visible')){
-			$('html, body').animate({
-				scrollTop: $('.footer-promo').offset().top
-			}, 500);
-		}
-	});
-
-	/* ==================== 12. Contact form ==================== */
-	$(function(){
-
-		$('#contactform').submit(function(){
-
-			var action = $(this).attr('action');
-
-			$('#message').slideUp(300,function() {
-			$('#message').hide();
-
-			$('#submit')
-				.after('<img src="images/loader.gif" class="loader">')
-				.attr('disabled','disabled');
-
-			$.post(action, {
-				name: $('#name').val(),
-				email: $('#email').val(),
-				phone: $('#phone').val(),
-				subject: $('#subject').val(),
-				comments: $('#comments').val(),
-				verify: $('#verify').val()
-			},
-				function(data){
-					document.getElementById('message').innerHTML = data;
-					$('#message').slideDown(300);
-					$('#contactform img.loader').fadeOut(300,function(){$(this).remove()});
-					$('#submit').removeAttr('disabled');
-					if(data.match('success') !== null) $('#contactform').slideUp(300);
-				}
-			);
-
-			});
-
-			return false;
-
-		});
-
-	});
-
-	/* ==================== 13. Scrollto ==================== */
-	$(function(){
-		$('.scrollto').bind('click.scrollto',function (e){
-			e.preventDefault();
-
-			var target = this.hash,
-			$target = $(target);
-
-			$('html, body').stop().animate({
-				'scrollTop': $target.offset().top-0
-			}, 900, 'swing', function () {
-				window.location.hash = target;
-			});
-		});
-	});
-
-	/* ==================== 14. Magnific popup ==================== */
-	// Image popup
-	$('.popup').magnificPopup({ 
-		type: 'image',
-		fixedContentPos: false,
-		fixedBgPos: false,
-		removalDelay: 300,
-		mainClass: 'mfp-fade'
-	});
-
-	// YouTube, Vimeo and Google Maps popup
-	$('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
-		disableOn: 700,
-		type: 'iframe',
-		fixedContentPos: false,
-		fixedBgPos: false,
-		removalDelay: 300,
-		mainClass: 'mfp-fade',
-		preloader: false
-	});
-
-	// Gallery popup
-	$('.popup-gallery').magnificPopup({
-		type: 'image',
-		gallery:{
-			enabled:true
-		},
-		fixedContentPos: false,
-		fixedBgPos: false,
-		removalDelay: 300,
-		mainClass: 'mfp-fade'
-	});
-
-	/* ==================== 15. Equal height ==================== */
-	/* Use the .equal class on a row if you want the columns to be equal in height */
-	$(document).ready(function(){
-		$('.equal').children('.col').equalizeHeight();
-		$(window).resize(function(){
-				$('.equal').children('.col').equalizeHeight();
-		});
-	});
-
-	/* ==================== 16. fitVids ==================== */
-	$(".responsive-video").fitVids();
-
-	$(document).ready(function(){
-		$('.ajax-popup-link').magnificPopup({
-		  type: 'ajax'
-		});
-		$('.open-kirsten').magnificPopup({
-  			type:'inline',
-		  	midClick: true 
-		});
-	});
-
-
-
-
-})(jQuery);
+  /* ==================== 10. Restore lightbox elements after close ==================== */
+  // When closing inline popups, restore the lightbox img/nav
+  var origCloseLightbox = closeLightbox;
+  closeLightbox = function () {
+    origCloseLightbox();
+    if (lightboxImg) lightboxImg.style.display = "";
+    if (lightboxPrev) lightboxPrev.style.display = "";
+    if (lightboxNext) lightboxNext.style.display = "";
+    if (lightboxOverlay) {
+      var inline = lightboxOverlay.querySelector(".lightbox-inline");
+      if (inline) inline.remove();
+    }
+  };
+  // Re-bind close button to new function
+  if (lightboxClose) {
+    lightboxClose.removeEventListener("click", origCloseLightbox);
+    lightboxClose.addEventListener("click", closeLightbox);
+  }
+})();
