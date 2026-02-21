@@ -1,2 +1,3 @@
 User-agent: *
-Disallow: /
+Disallow: /sample-report/
+Sitemap: https://healthystartchildcare.com/sitemap.xml
