@@ -1,7 +1,17 @@
 """Create the static deployment directory and the matching upload-ready ZIP."""
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
+import os
 import shutil
+import stat
+
+
+def clear_readonly(function, path, exception_info):
+    """Allow rebuilding generated files in Windows/OneDrive directories."""
+    if not isinstance(exception_info[1], PermissionError):
+        raise exception_info[1]
+    os.chmod(path, stat.S_IWRITE)
+    function(path)
 
 root = Path(__file__).resolve().parents[1]
 dist = root / "dist"
@@ -10,7 +20,7 @@ if dist.exists():
     # Only clear this script's fixed output directory inside the repository.
     if dist.is_symlink() or dist.resolve() != root / "dist":
         raise RuntimeError("Refusing to clear an unexpected output directory")
-    shutil.rmtree(dist)
+    shutil.rmtree(dist, onerror=clear_readonly)
 dist.mkdir()
 artifacts.mkdir(exist_ok=True)
 
