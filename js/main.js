@@ -37,7 +37,8 @@
     var target = document.querySelector(hash);
     if (!target) return;
     e.preventDefault();
-    target.scrollIntoView({ behavior: "smooth" });
+    target.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    if (target.id === "contact") target.focus({ preventScroll: true });
     history.pushState(null, null, hash);
   });
 
@@ -47,9 +48,10 @@
     var quotes = quoteSlider.querySelectorAll("li");
     var currentQuote = 0;
     if (quotes.length > 1) {
-      // Hide all but the first
+      // Keep every quote in the grid so rotation cannot move later sections.
+      quoteSlider.classList.add("is-rotating");
       quotes.forEach(function (q, i) {
-        q.style.display = i === 0 ? "" : "none";
+        q.style.visibility = i === 0 ? "visible" : "hidden";
         q.style.opacity = i === 0 ? "1" : "0";
         q.style.transition = "opacity 0.6s ease";
       });
@@ -58,8 +60,8 @@
         currentQuote = (currentQuote + 1) % quotes.length;
         quotes[prev].style.opacity = "0";
         setTimeout(function () {
-          quotes[prev].style.display = "none";
-          quotes[currentQuote].style.display = "";
+          quotes[prev].style.visibility = "hidden";
+          quotes[currentQuote].style.visibility = "visible";
           // Force reflow
           quotes[currentQuote].offsetHeight;
           quotes[currentQuote].style.opacity = "1";
@@ -180,63 +182,7 @@
     });
   }
 
-  /* ==================== 08. Ajax popup (Sample report) ==================== */
-  var ajaxLinks = document.querySelectorAll(".ajax-popup-link");
-  ajaxLinks.forEach(function (link) {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      var url = link.getAttribute("href");
-      if (!lightboxOverlay) createLightbox();
-      lightboxImg.style.display = "none";
-      lightboxPrev.style.display = "none";
-      lightboxNext.style.display = "none";
-      var content = lightboxOverlay.querySelector(".lightbox-content");
-      var existing = content.querySelector(".lightbox-inline");
-      if (existing) existing.remove();
-      var wrapper = document.createElement("div");
-      wrapper.className = "lightbox-inline";
-      wrapper.textContent = "Loading...";
-      content.appendChild(wrapper);
-      lightboxOverlay.classList.add("active");
-      document.body.style.overflow = "hidden";
-      fetch(url)
-        .then(function (r) {
-          return r.text();
-        })
-        .then(function (html) {
-          wrapper.innerHTML = html;
-        })
-        .catch(function () {
-          wrapper.textContent = "Failed to load content.";
-        });
-    });
-  });
-
-  /* ==================== 09. Pricing loader ==================== */
-  fetch("data/pricing.json")
-    .then(function (r) {
-      return r.json();
-    })
-    .then(function (data) {
-      var setTextById = function (id, text) {
-        var el = document.getElementById(id);
-        if (el) el.textContent = text;
-      };
-      setTextById("pricing-fulltime", data.fullTime);
-      setTextById("pricing-parttime", data.partTime);
-      setTextById("pricing-beforeafter", data.beforeAfterSchool);
-      setTextById("pricing-occasional", data.occasionalCare);
-      var updated = document.getElementById("opening-revised");
-      if (updated && data.lastUpdated) {
-        updated.textContent = "Openings last updated " + data.lastUpdated;
-        updated.style.display = "";
-      }
-    })
-    .catch(function () {
-      /* silently fail - pricing section just stays empty */
-    });
-
-  /* ==================== 10. Restore lightbox elements after close ==================== */
+  /* ==================== 08. Restore lightbox elements after close ==================== */
   // When closing inline popups, restore the lightbox img/nav
   var origCloseLightbox = closeLightbox;
   closeLightbox = function () {
