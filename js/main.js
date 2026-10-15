@@ -182,22 +182,6 @@
     });
   }
 
-  /* Keep a useful contact option available if the hosted form cannot load. */
-  var formEmbed = document.getElementById("eh_form_5392538928414720");
-  var formFallback = document.getElementById("contact-fallback");
-  if (formEmbed && formFallback) {
-    var formWaitExpired = false;
-    var updateFormFallback = function () {
-      var hasForm = !!formEmbed.querySelector("form, iframe, input:not([type='hidden']), textarea");
-      formFallback.hidden = hasForm || !formWaitExpired;
-    };
-    new MutationObserver(updateFormFallback).observe(formEmbed, { childList: true, subtree: true });
-    setTimeout(function () {
-      formWaitExpired = true;
-      updateFormFallback();
-    }, 8000);
-  }
-
   /* ==================== 08. Restore lightbox elements after close ==================== */
   // When closing inline popups, restore the lightbox img/nav
   var origCloseLightbox = closeLightbox;

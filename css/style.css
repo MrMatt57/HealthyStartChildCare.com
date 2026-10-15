@@ -2267,11 +2267,27 @@ body { color: #555; font-size: 15px; line-height: 1.75; }
 .work-prev, .work-next { padding: 0; background: transparent; color: #555; }
 .work-prev:hover, .work-next:hover { background: transparent; color: #2b2b2b; }
 .hs-contact-form { max-width: 700px; margin: 0 auto; padding: 0 24px; }
-.contact-fallback { padding: 24px; background: #f6f5f2; border-radius: 12px; }
-.contact-fallback a { text-decoration: underline; }
+.hs-form-intro { font-size: 17px; text-align: center; margin-bottom: 30px; }
+.hs-form-note, .hs-form-email { color: #666; font-size: 13px; }
+.hs-form-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+.hs-field { min-width: 0; }
+.hs-field-wide { grid-column: 1 / -1; }
+.hs-field label { display: block; color: #2b2b2b; margin-bottom: 7px; }
+.hs-field label span { color: #666; font-size: 13px; }
+.hs-field input, .hs-field select, .hs-field textarea { box-sizing: border-box; width: 100%; min-width: 0; border: 1px solid #c9c7c1; border-radius: 6px; background: #fff; color: #2b2b2b; font: inherit; font-size: 16px; padding: 11px 12px; min-height: 48px; }
+.hs-field textarea { resize: vertical; }
+.hs-field input:focus, .hs-field select:focus, .hs-field textarea:focus { outline: 2px solid #555; outline-offset: 2px; }
+.hs-inquiry-form button { background: #2b2b2b; font-weight: 400; text-transform: none; letter-spacing: 0; margin-top: 24px; min-width: 165px; }
+.hs-inquiry-form button:hover { background: #444; }
+.hs-inquiry-form button:disabled { opacity: .6; cursor: not-allowed; }
+.hs-form-email { margin: 22px 0 0; overflow-wrap: anywhere; }
+.hs-form-email a { text-decoration: underline; }
+@media (max-width: 550px) {
+  .hs-form-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .hs-inquiry-form button { width: 100%; }
+}
 #contact { padding: 65px 0; }
 #contact:focus { outline: none; }
-#contact .engage-hub-form-embed * { font-weight: 400 !important; text-transform: none !important; }
 .footer { background: #f6f5f2; color: #666; text-align: center; font-size: 13px; padding: 35px 16px; }
 .footer p { margin-bottom: 8px; }
 .footer a:hover { text-decoration: underline; }

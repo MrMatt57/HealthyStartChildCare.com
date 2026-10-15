@@ -27,7 +27,9 @@ python scripts/package-site.py
 
 Upload `artifacts/Healthy-Start-staging.zip` to staging, or serve `dist/` locally. The ZIP has `index.html` at its root and contains only public site files. Each deployment workflow also saves the ZIP as the `Healthy-Start-staging` artifact. Merge an approved PR into `main` to deploy to production.
 
-The contact section preserves the existing EngageBay embed. If the provider cannot load the form, an email fallback appears after eight seconds. The provider currently returns HTTP 401 on the live site; a valid public form URL or updated embed is needed to restore form submissions. No test inquiries are submitted by the website checks.
+The contact section contains a native HTML inquiry form styled with the site's existing fonts. It replaces the former EngageBay embed, which returned HTTP 401 on the live site. The requested notification recipient is `jaimie@healthystartchildcare.com`.
+
+Formspree account setup is pending. Before production approval, create a form in that account, verify and select Jaimie's address as the notification recipient, and replace the inquiry form's `action="#contact"` with its `https://formspree.io/f/...` endpoint. Remove `disabled` from `#inquiry-submit` and update the temporary email note. Native POST submission supports the provider's spam checks and confirmation page. The preview currently keeps Send message disabled and provides a direct email link. No inquiry has been submitted.
 
 ## Deployment
 
