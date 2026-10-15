@@ -16,6 +16,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Package static site and staging ZIP
+        run: python3 scripts/package-site.py
+
+      - name: Save staging ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: Healthy-Start-staging
+          path: artifacts/Healthy-Start-staging.zip
+          if-no-files-found: error
+
       - name: Install Wrangler
         run: npm install -g wrangler
 
@@ -26,9 +36,10 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy to Cloudflare Pages
+        id: deploy
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name=healthystartchildcare --branch=${{ github.head_ref || github.ref_name }}
+          command: pages deploy dist --project-name=healthystartchildcare --branch=${{ github.head_ref || github.ref_name }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

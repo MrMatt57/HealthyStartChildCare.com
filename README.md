@@ -19,6 +19,16 @@ No build step required. Open `index.html` locally or use any static file server:
 npx serve .
 ```
 
+To create the upload-ready staging ZIP and the exact directory used by Cloudflare Pages:
+
+```bash
+python scripts/package-site.py
+```
+
+Upload `artifacts/Healthy-Start-staging.zip` to staging, or serve `dist/` locally. The ZIP has `index.html` at its root and contains only public site files. Each deployment workflow also saves the ZIP as the `Healthy-Start-staging` artifact. Merge an approved PR into `main` to deploy to production.
+
+The contact section preserves the existing EngageBay embed. If the provider cannot load the form, an email fallback appears after eight seconds. The provider currently returns HTTP 401 on the live site; a valid public form URL or updated embed is needed to restore form submissions. No test inquiries are submitted by the website checks.
+
 ## Deployment
 
 Cloudflare Pages automatically deploys on push to `main`:

@@ -37,7 +37,8 @@
     var target = document.querySelector(hash);
     if (!target) return;
     e.preventDefault();
-    target.scrollIntoView({ behavior: "smooth" });
+    target.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    if (target.id === "contact") target.focus({ preventScroll: true });
     history.pushState(null, null, hash);
   });
 
@@ -180,63 +181,23 @@
     });
   }
 
-  /* ==================== 08. Ajax popup (Sample report) ==================== */
-  var ajaxLinks = document.querySelectorAll(".ajax-popup-link");
-  ajaxLinks.forEach(function (link) {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      var url = link.getAttribute("href");
-      if (!lightboxOverlay) createLightbox();
-      lightboxImg.style.display = "none";
-      lightboxPrev.style.display = "none";
-      lightboxNext.style.display = "none";
-      var content = lightboxOverlay.querySelector(".lightbox-content");
-      var existing = content.querySelector(".lightbox-inline");
-      if (existing) existing.remove();
-      var wrapper = document.createElement("div");
-      wrapper.className = "lightbox-inline";
-      wrapper.textContent = "Loading...";
-      content.appendChild(wrapper);
-      lightboxOverlay.classList.add("active");
-      document.body.style.overflow = "hidden";
-      fetch(url)
-        .then(function (r) {
-          return r.text();
-        })
-        .then(function (html) {
-          wrapper.innerHTML = html;
-        })
-        .catch(function () {
-          wrapper.textContent = "Failed to load content.";
-        });
-    });
-  });
+  /* Keep a useful contact option available if the hosted form cannot load. */
+  var formEmbed = document.getElementById("eh_form_5392538928414720");
+  var formFallback = document.getElementById("contact-fallback");
+  if (formEmbed && formFallback) {
+    var formWaitExpired = false;
+    var updateFormFallback = function () {
+      var hasForm = !!formEmbed.querySelector("form, iframe, input:not([type='hidden']), textarea");
+      formFallback.hidden = hasForm || !formWaitExpired;
+    };
+    new MutationObserver(updateFormFallback).observe(formEmbed, { childList: true, subtree: true });
+    setTimeout(function () {
+      formWaitExpired = true;
+      updateFormFallback();
+    }, 8000);
+  }
 
-  /* ==================== 09. Pricing loader ==================== */
-  fetch("data/pricing.json")
-    .then(function (r) {
-      return r.json();
-    })
-    .then(function (data) {
-      var setTextById = function (id, text) {
-        var el = document.getElementById(id);
-        if (el) el.textContent = text;
-      };
-      setTextById("pricing-fulltime", data.fullTime);
-      setTextById("pricing-parttime", data.partTime);
-      setTextById("pricing-beforeafter", data.beforeAfterSchool);
-      setTextById("pricing-occasional", data.occasionalCare);
-      var updated = document.getElementById("opening-revised");
-      if (updated && data.lastUpdated) {
-        updated.textContent = "Openings last updated " + data.lastUpdated;
-        updated.style.display = "";
-      }
-    })
-    .catch(function () {
-      /* silently fail - pricing section just stays empty */
-    });
-
-  /* ==================== 10. Restore lightbox elements after close ==================== */
+  /* ==================== 08. Restore lightbox elements after close ==================== */
   // When closing inline popups, restore the lightbox img/nav
   var origCloseLightbox = closeLightbox;
   closeLightbox = function () {
