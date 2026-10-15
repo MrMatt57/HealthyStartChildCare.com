@@ -48,9 +48,10 @@
     var quotes = quoteSlider.querySelectorAll("li");
     var currentQuote = 0;
     if (quotes.length > 1) {
-      // Hide all but the first
+      // Keep every quote in the grid so rotation cannot move later sections.
+      quoteSlider.classList.add("is-rotating");
       quotes.forEach(function (q, i) {
-        q.style.display = i === 0 ? "" : "none";
+        q.style.visibility = i === 0 ? "visible" : "hidden";
         q.style.opacity = i === 0 ? "1" : "0";
         q.style.transition = "opacity 0.6s ease";
       });
@@ -59,8 +60,8 @@
         currentQuote = (currentQuote + 1) % quotes.length;
         quotes[prev].style.opacity = "0";
         setTimeout(function () {
-          quotes[prev].style.display = "none";
-          quotes[currentQuote].style.display = "";
+          quotes[prev].style.visibility = "hidden";
+          quotes[currentQuote].style.visibility = "visible";
           // Force reflow
           quotes[currentQuote].offsetHeight;
           quotes[currentQuote].style.opacity = "1";

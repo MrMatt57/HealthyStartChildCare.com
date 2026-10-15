@@ -2137,6 +2137,8 @@ section[id] {
 .quote-slider li {
 	list-style: none;
 }
+.quote-slider.is-rotating { display: grid; }
+.quote-slider.is-rotating > li { grid-area: 1 / 1; align-self: center; min-width: 0; }
 
 
 
