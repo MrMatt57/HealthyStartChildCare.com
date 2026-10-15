@@ -29,7 +29,7 @@ Upload `artifacts/Healthy-Start-staging.zip` to staging, or serve `dist/` locall
 
 The contact section contains a native HTML inquiry form styled with the site's existing fonts. It replaces the former EngageBay embed, which returned HTTP 401 on the live site. The requested notification recipient is `jaimie@healthystartchildcare.com`.
 
-Formspree account setup is pending. Before production approval, create a form in that account, verify and select Jaimie's address as the notification recipient, and replace the inquiry form's `action="#contact"` with its `https://formspree.io/f/...` endpoint. Remove `disabled` from `#inquiry-submit` and update the temporary email note. Native POST submission supports the provider's spam checks and confirmation page. The preview currently keeps Send message disabled and provides a direct email link. No inquiry has been submitted.
+The Formspree account is accessible, and `jaimie@healthystartchildcare.com` has been added as a linked email. Recipient verification is pending; Formspree sent the verification link to Jaimie's inbox. Before production approval, verify that address, create a form with Jaimie as the notification recipient, and replace the inquiry form's `action="#contact"` with its `https://formspree.io/f/...` endpoint. Remove `disabled` from `#inquiry-submit` and update the temporary email note. Native POST submission supports the provider's spam checks and confirmation page. The preview currently keeps Send message disabled and provides a direct email link. No inquiry has been submitted.
 
 ## Deployment
 
@@ -40,7 +40,7 @@ Cloudflare Pages automatically deploys on push to `main`:
 ### Setup (one-time)
 
 1. Create a Cloudflare Pages project linked to this GitHub repo
-2. Build output directory: `/` (no build command needed)
+2. The GitHub Actions workflow runs `python3 scripts/package-site.py` and deploys `dist/`
 3. Configure custom domain `healthystartchildcare.com` in Pages dashboard
 
 ## Project Structure
@@ -54,11 +54,10 @@ Cloudflare Pages automatically deploys on push to `main`:
 │   ├── font-awesome.min.css
 │   └── style.css       # Site styles
 ├── js/
-│   └── main.js         # Vanilla JS (menu, scroll, carousel, lightbox, pricing)
-├── data/
-│   └── pricing.json    # Openings/pricing data
+│   └── main.js         # Vanilla JS (menu, scroll, carousel, lightbox)
 ├── images/             # Site images
-├── sample-report/      # Sample activity log
+├── scripts/
+│   └── package-site.py # Creates dist/ and the staging ZIP
 ├── robots.txt          # SEO crawl rules
 └── sitemap.xml         # Sitemap for search engines
 ```
