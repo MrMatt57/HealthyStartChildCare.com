@@ -1,203 +1,173 @@
 (function () {
   "use strict";
 
-  /* ==================== 01. Menu toggle ==================== */
   var toggle = document.getElementById("toggle");
   if (toggle) {
-    toggle.addEventListener("click", function (e) {
-      e.stopPropagation();
-    });
+    toggle.addEventListener("click", function (e) { e.stopPropagation(); });
     document.documentElement.addEventListener("click", function (e) {
-      if (!e.target.classList.contains("toggle")) {
-        toggle.checked = false;
-      }
+      if (!e.target.classList.contains("toggle")) toggle.checked = false;
     });
   }
 
-  /* ==================== 02. Top bar scroll effect ==================== */
   var topBar = document.querySelector(".top-bar");
-  if (topBar) {
-    window.addEventListener("scroll", function () {
-      if (window.scrollY > 100) {
-        topBar.classList.remove("tb-large");
-        topBar.classList.add("tb-small");
-      } else {
-        topBar.classList.remove("tb-small");
-        topBar.classList.add("tb-large");
-      }
-    });
+  function updateTopBar() {
+    if (!topBar) return;
+    topBar.classList.toggle("tb-large", window.scrollY <= 100);
+    topBar.classList.toggle("tb-small", window.scrollY > 100);
+  }
+  window.addEventListener("scroll", updateTopBar, { passive: true });
+  updateTopBar();
+
+  function scrollBehavior() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
   }
 
-  /* ==================== 03. Smooth scroll ==================== */
+  // The inquiry form is revealed by either call to action or the Contact menu link.
+  var contact = document.getElementById("contact");
+  var contactLinks = document.querySelectorAll('a[href="#contact"]');
+  var contactTrigger = null;
+  function setContactOpen(open) {
+    if (!contact) return;
+    contact.hidden = !open;
+    contactLinks.forEach(function (link) { link.setAttribute("aria-expanded", String(open)); });
+  }
   document.addEventListener("click", function (e) {
     var link = e.target.closest(".scrollto");
     if (!link) return;
     var hash = link.getAttribute("href");
     if (!hash || hash.charAt(0) !== "#") return;
-    var target = document.querySelector(hash);
+    var target = document.getElementById(hash.slice(1));
     if (!target) return;
     e.preventDefault();
-    target.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-    if (target.id === "contact") target.focus({ preventScroll: true });
-    history.pushState(null, null, hash);
+    if (target === contact) {
+      contactTrigger = link;
+      setContactOpen(true);
+      contact.focus({ preventScroll: true });
+    }
+    target.scrollIntoView({ behavior: scrollBehavior() });
+    history.pushState(null, "", hash);
   });
-
-  /* ==================== 04. Quote slider ==================== */
-  var quoteSlider = document.querySelector(".quote-slider");
-  if (quoteSlider) {
-    var quotes = quoteSlider.querySelectorAll("li");
-    var currentQuote = 0;
-    if (quotes.length > 1) {
-      // Keep every quote in the grid so rotation cannot move later sections.
-      quoteSlider.classList.add("is-rotating");
-      quotes.forEach(function (q, i) {
-        q.style.visibility = i === 0 ? "visible" : "hidden";
-        q.style.opacity = i === 0 ? "1" : "0";
-        q.style.transition = "opacity 0.6s ease";
-      });
-      setInterval(function () {
-        var prev = currentQuote;
-        currentQuote = (currentQuote + 1) % quotes.length;
-        quotes[prev].style.opacity = "0";
-        setTimeout(function () {
-          quotes[prev].style.visibility = "hidden";
-          quotes[currentQuote].style.visibility = "visible";
-          // Force reflow
-          quotes[currentQuote].offsetHeight;
-          quotes[currentQuote].style.opacity = "1";
-        }, 600);
-      }, 6000);
-    }
-  }
-
-  /* ==================== 05. Photo carousel (scroll-snap) ==================== */
-  var carousel = document.querySelector(".work-slider");
-  if (carousel) {
-    var prevBtn = document.querySelector(".work-prev");
-    var nextBtn = document.querySelector(".work-next");
-    if (prevBtn) {
-      prevBtn.addEventListener("click", function () {
-        carousel.scrollBy({ left: -300, behavior: "smooth" });
-      });
-    }
-    if (nextBtn) {
-      nextBtn.addEventListener("click", function () {
-        carousel.scrollBy({ left: 300, behavior: "smooth" });
-      });
-    }
-  }
-
-  /* ==================== 06. Lightbox ==================== */
-  var lightboxOverlay = null;
-  var lightboxImg = null;
-  var lightboxClose = null;
-  var lightboxPrev = null;
-  var lightboxNext = null;
-  var galleryLinks = [];
-  var galleryIndex = 0;
-
-  function createLightbox() {
-    lightboxOverlay = document.createElement("div");
-    lightboxOverlay.className = "lightbox-overlay";
-    lightboxOverlay.innerHTML =
-      '<div class="lightbox-content">' +
-      '<button class="lightbox-close" aria-label="Close">&times;</button>' +
-      '<button class="lightbox-prev" aria-label="Previous">&#8249;</button>' +
-      '<img class="lightbox-img" src="" alt="">' +
-      '<button class="lightbox-next" aria-label="Next">&#8250;</button>' +
-      "</div>";
-    document.body.appendChild(lightboxOverlay);
-    lightboxImg = lightboxOverlay.querySelector(".lightbox-img");
-    lightboxClose = lightboxOverlay.querySelector(".lightbox-close");
-    lightboxPrev = lightboxOverlay.querySelector(".lightbox-prev");
-    lightboxNext = lightboxOverlay.querySelector(".lightbox-next");
-
-    lightboxClose.addEventListener("click", closeLightbox);
-    lightboxOverlay.addEventListener("click", function (e) {
-      if (e.target === lightboxOverlay) closeLightbox();
-    });
-    lightboxPrev.addEventListener("click", function () {
-      galleryIndex =
-        (galleryIndex - 1 + galleryLinks.length) % galleryLinks.length;
-      lightboxImg.src = galleryLinks[galleryIndex].href;
-    });
-    lightboxNext.addEventListener("click", function () {
-      galleryIndex = (galleryIndex + 1) % galleryLinks.length;
-      lightboxImg.src = galleryLinks[galleryIndex].href;
-    });
-    document.addEventListener("keydown", function (e) {
-      if (!lightboxOverlay.classList.contains("active")) return;
-      if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowLeft") lightboxPrev.click();
-      if (e.key === "ArrowRight") lightboxNext.click();
-    });
-  }
-
-  function openLightbox(index) {
-    if (!lightboxOverlay) createLightbox();
-    galleryIndex = index;
-    lightboxImg.src = galleryLinks[galleryIndex].href;
-    lightboxOverlay.classList.add("active");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeLightbox() {
-    lightboxOverlay.classList.remove("active");
-    document.body.style.overflow = "";
-  }
-
-  // Bind gallery links
-  galleryLinks = Array.prototype.slice.call(
-    document.querySelectorAll(".popup-gallery")
-  );
-  galleryLinks.forEach(function (link, i) {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      openLightbox(i);
-    });
+  var contactClose = document.querySelector(".hs-contact-close");
+  if (contactClose) contactClose.addEventListener("click", function () {
+    setContactOpen(false);
+    var target = contactTrigger || document.querySelector(".hs-cta-btn");
+    if (target) target.focus();
+    history.replaceState(null, "", "#get-in-touch");
   });
+  function restoreContactAnchor() {
+    if (location.hash === "#contact" && contact) {
+      setContactOpen(true);
+      contact.scrollIntoView({ behavior: "auto" });
+    } else {
+      setContactOpen(false);
+    }
+  }
+  window.addEventListener("hashchange", restoreContactAnchor);
+  window.addEventListener("popstate", restoreContactAnchor);
+  restoreContactAnchor();
 
-  /* ==================== 07. Inline popup (Kirsten testimonial) ==================== */
-  var kirstenLinks = document.querySelectorAll(".open-kirsten");
-  var kirstenPopup = document.getElementById("kirsten");
-  if (kirstenLinks.length && kirstenPopup) {
-    kirstenPopup.style.display = "none";
-    kirstenLinks.forEach(function (link) {
+  // Testimonials only move when a visitor uses an arrow, dot, keyboard or swipe.
+  var track = document.querySelector(".hs-kw-track");
+  if (track) {
+    var slides = Array.from(track.children);
+    var dots = document.querySelector(".hs-kw-dots");
+    var activeSlide = 0;
+    var status = document.createElement("p");
+    status.className = "hs-sr-only";
+    status.setAttribute("aria-live", "polite");
+    status.setAttribute("aria-atomic", "true");
+    track.parentNode.appendChild(status);
+    function markSlide(index) {
+      activeSlide = Math.max(0, Math.min(slides.length - 1, index));
+      Array.from(dots.children).forEach(function (dot, i) {
+        dot.classList.toggle("on", i === activeSlide);
+        dot.setAttribute("aria-current", i === activeSlide ? "true" : "false");
+        slides[i].setAttribute("aria-hidden", String(i !== activeSlide));
+      });
+      status.textContent = "Testimonial slide " + (activeSlide + 1) + " of " + slides.length;
+    }
+    function goToSlide(index) {
+      var next = (index + slides.length) % slides.length;
+      track.scrollTo({ left: next * track.clientWidth, behavior: scrollBehavior() });
+    }
+    slides.forEach(function (slide, i) {
+      slide.setAttribute("role", "group");
+      slide.setAttribute("aria-roledescription", "slide");
+      slide.setAttribute("aria-label", (i + 1) + " of " + slides.length);
+      var dot = document.createElement("button");
+      dot.type = "button";
+      dot.setAttribute("aria-label", "Testimonial " + (i + 1));
+      dot.setAttribute("aria-controls", "testimonials");
+      dot.addEventListener("click", function () { goToSlide(i); });
+      dots.appendChild(dot);
+    });
+    document.querySelectorAll(".hs-kw-arrow").forEach(function (arrow) {
+      arrow.addEventListener("click", function () { goToSlide(activeSlide + Number(arrow.dataset.dir)); });
+    });
+    track.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        e.preventDefault();
+        goToSlide(activeSlide + (e.key === "ArrowLeft" ? -1 : 1));
+      }
+    });
+    track.addEventListener("scroll", function () {
+      var index = Math.round(track.scrollLeft / track.clientWidth);
+      if (index !== activeSlide) markSlide(index);
+    }, { passive: true });
+    new ResizeObserver(function () {
+      track.scrollTo({ left: activeSlide * track.clientWidth, behavior: "instant" });
+    }).observe(track);
+    markSlide(0);
+  }
+
+  // Native dialog provides focus containment and Escape-to-close for enlarged photos.
+  var galleryLinks = Array.from(document.querySelectorAll(".popup-gallery"));
+  if (galleryLinks.length) {
+    var dialog = document.createElement("dialog");
+    dialog.className = "hs-lightbox";
+    dialog.setAttribute("aria-label", "Enlarged photo");
+    dialog.innerHTML = '<div class="hs-lightbox-panel">' +
+      '<button type="button" class="hs-lightbox-close" aria-label="Close photo">&times;</button>' +
+      '<button type="button" class="hs-lightbox-prev" aria-label="Previous photo">&#8249;</button>' +
+      '<img class="hs-lightbox-image" alt="">' +
+      '<button type="button" class="hs-lightbox-next" aria-label="Next photo">&#8250;</button></div>';
+    document.body.appendChild(dialog);
+    var photo = dialog.querySelector("img");
+    var group = [];
+    var photoIndex = 0;
+    var opener = null;
+    var oldOverflow = "";
+    function showPhoto(index) {
+      photoIndex = (index + group.length) % group.length;
+      photo.src = group[photoIndex].href;
+      photo.alt = group[photoIndex].querySelector("img").alt;
+    }
+    galleryLinks.forEach(function (link) {
+      link.setAttribute("aria-haspopup", "dialog");
       link.addEventListener("click", function (e) {
         e.preventDefault();
-        if (!lightboxOverlay) createLightbox();
-        lightboxImg.style.display = "none";
-        lightboxPrev.style.display = "none";
-        lightboxNext.style.display = "none";
-        var content = lightboxOverlay.querySelector(".lightbox-content");
-        var existing = content.querySelector(".lightbox-inline");
-        if (existing) existing.remove();
-        var wrapper = document.createElement("div");
-        wrapper.className = "lightbox-inline";
-        wrapper.innerHTML = kirstenPopup.innerHTML;
-        content.appendChild(wrapper);
-        lightboxOverlay.classList.add("active");
+        opener = link;
+        group = Array.from(link.closest("section").querySelectorAll(".popup-gallery"));
+        showPhoto(group.indexOf(link));
+        oldOverflow = document.body.style.overflow;
         document.body.style.overflow = "hidden";
+        dialog.showModal();
+        dialog.querySelector(".hs-lightbox-close").focus();
       });
     });
-  }
-
-  /* ==================== 08. Restore lightbox elements after close ==================== */
-  // When closing inline popups, restore the lightbox img/nav
-  var origCloseLightbox = closeLightbox;
-  closeLightbox = function () {
-    origCloseLightbox();
-    if (lightboxImg) lightboxImg.style.display = "";
-    if (lightboxPrev) lightboxPrev.style.display = "";
-    if (lightboxNext) lightboxNext.style.display = "";
-    if (lightboxOverlay) {
-      var inline = lightboxOverlay.querySelector(".lightbox-inline");
-      if (inline) inline.remove();
-    }
-  };
-  // Re-bind close button to new function
-  if (lightboxClose) {
-    lightboxClose.removeEventListener("click", origCloseLightbox);
-    lightboxClose.addEventListener("click", closeLightbox);
+    dialog.querySelector(".hs-lightbox-close").addEventListener("click", function () { dialog.close(); });
+    dialog.querySelector(".hs-lightbox-prev").addEventListener("click", function () { showPhoto(photoIndex - 1); });
+    dialog.querySelector(".hs-lightbox-next").addEventListener("click", function () { showPhoto(photoIndex + 1); });
+    dialog.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        e.preventDefault();
+        showPhoto(photoIndex + (e.key === "ArrowLeft" ? -1 : 1));
+      }
+    });
+    dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
+    dialog.addEventListener("close", function () {
+      document.body.style.overflow = oldOverflow;
+      if (opener) opener.focus({ preventScroll: true });
+    });
   }
 })();

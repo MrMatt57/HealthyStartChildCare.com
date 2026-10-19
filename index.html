@@ -27,8 +27,8 @@
 	<meta itemprop="image" content="https://healthystartchildcare.com/images/banner-desktop.jpg">
 
 	<!-- Fonts -->
-	<link href='https://fonts.googleapis.com/css?family=Raleway:400,100,300' rel='stylesheet' type='text/css'>
-	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:400,100,300,700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,400italic' rel='stylesheet' type='text/css'>
 	<link href='https://fonts.googleapis.com/css?family=Italianno' rel='stylesheet' type='text/css'>
 
 	<!-- Essential stylesheets -->
@@ -36,7 +36,8 @@
 	<link rel="stylesheet" href="css/base.css">
 
 	<!-- The stylesheet -->
-	<link rel="stylesheet" href="css/style.css?v=5">
+	<link rel="stylesheet" href="css/style.css?v=6">
+	<link rel="stylesheet" href="css/sections.css?v=1">
 
 
 	<!-- The favicon -->
@@ -67,8 +68,8 @@
       <li><a href="#about" class="scrollto">Meet Jaimie</a></li>
       <li><a href="#program" class="scrollto">Program</a></li>
       <li><a href="#environment" class="scrollto">Environment</a></li>
-      <li><a href="#kind-words" class="scrollto">Kind words</a></li>
-      <li><a href="#contact" class="scrollto">Contact</a></li>
+      <li><a href="#kind-words" class="scrollto">Kind Words</a></li>
+      <li><a href="#contact" aria-controls="contact" aria-expanded="false" class="scrollto">Contact</a></li>
       <li><a href="#location" class="scrollto">Location</a></li>
     </ul></nav>
   </div></div>
@@ -81,7 +82,6 @@
   </picture>
   <h1 class="hs-title healthystartfont">Healthy Start</h1>
   <p class="hs-tagline">because the early years matter</p>
-  <a class="hs-hero-tour scrollto" href="#contact">Schedule a tour</a>
 </section>
 
 <div class="hs-intro"><p>A safe, nurturing home where every child is respected and valued.</p></div>
@@ -93,13 +93,13 @@
     <span class="hs-link-desc">Learning through books and play</span></div>
   </a>
   <a class="hs-link scrollto" href="#environment">
-    <img src="images/icon-environment.png" alt="">
+    <img class="hs-ic-house" src="images/icon-environment.png" alt="">
     <div><span class="hs-link-title">Environment</span>
     <span class="hs-link-desc">Room to explore, inside and out</span></div>
   </a>
   <a class="hs-link scrollto" href="#kind-words">
-    <img src="images/icon-kind-words.png" alt="">
-    <div><span class="hs-link-title">Kind words</span>
+    <img class="hs-ic-words" src="images/icon-kind-words.png" alt="">
+    <div><span class="hs-link-title">Kind Words</span>
     <span class="hs-link-desc">What families say</span></div>
   </a>
 </nav>
@@ -118,7 +118,7 @@
     <span><span class="hs-fact-label">Area</span> Westminster / Mt. Airy</span>
     <span><span class="hs-fact-label">MD License</span> #162650</span>
     <span><span class="hs-fact-label">Licensed</span> since 2014</span>
-    <a class="hs-tour scrollto" href="#contact">Schedule a tour</a>
+    <a class="hs-tour scrollto" href="#contact" aria-controls="contact" aria-expanded="false">Schedule a Tour</a>
   </div>
 </section>
 
@@ -142,6 +142,7 @@
 					<div class="row">
 						<div class="eight col offset-by-two">
 							<h3 class="uber"><span class="serif">“Play is the highest expression of human development in childhood, for it alone is the free expression of what is in a child’s soul.”</span></h3><p class="quote-attribution">&mdash; Friedrich Froebel, founder of kindergarten</p>
+<img loading="lazy" decoding="async" class="hs-program-photo" src="images/program-rain-chalk.jpg" alt="Children in rain suits drawing with chalk on the wet patio">
 						</div>
 						<div class="eight col offset-by-two">
 							<h3>Learning through literature and play</h3>
@@ -156,6 +157,11 @@
 							<p>Literacy Launch and Math Milestones build the early skills behind lifelong academic success. Letters and numbers come alive in favorite books and everyday moments, making early reading and math a joyful discovery.</p>
 
 							<p>Wild Wonders and Tinker Time invite children to investigate and create. Following the seasons through the natural world and trying their hand at construction and engineering, they grow as scientists, problem solvers and builders.</p>
+<div class="hs-strand-photos">
+  <a class="popup-gallery" href="images/strand-butterfly.jpg"><img loading="lazy" decoding="async" src="images/strand-butterfly.jpg" alt="A monarch butterfly resting on a child's hand"></a>
+  <a class="popup-gallery" href="images/strand-magna-tiles.jpg"><img loading="lazy" decoding="async" src="images/strand-magna-tiles.jpg" alt="Children building a tall structure with magnetic tiles"></a>
+  <a class="popup-gallery" href="images/strand-drill.jpg"><img loading="lazy" decoding="async" src="images/strand-drill.jpg" alt="A toddler using a toy drill on a pegboard of colorful bolts"></a>
+</div>
 
 							<p>Special-interest extensions carry the learning through summer, so children enjoy a full year of discovery.</p>
 
@@ -167,11 +173,17 @@
 							<h3>School-age care</h3>
 							<p>After a long school day, school-agers need a safe place to unwind. A wholesome snack and the freedom to choose quiet time, fresh air or space to run help restore balance, and homework help is always available.</p>
 
-							<h3>Wholesome meals</h3>
-							<p>Real kids deserve real food. Breakfast, lunch and an afternoon snack are provided daily, featuring fresh fruits and vegetables, whole grains and wholesome favorites children love.</p>
-							<p><em>Menus are adapted to keep children with food allergies safe.</em></p>
+							<div class="hs-meals">
+  <h3>Meals Provided</h3>
+  <p>One less thing on your plate. Breakfast, lunch and an afternoon snack are provided daily, featuring fresh fruits and vegetables, whole grains and wholesome favorites children love. Menus are adapted to keep children with food allergies safe.</p>
+  <div class="hs-meal-photos">
+    <img loading="lazy" decoding="async" src="images/meal-1-breakfast.jpg" alt="Breakfast trays with scrambled eggs, hash browns, sausage, mini pancakes and strawberries with oranges">
+    <img loading="lazy" decoding="async" src="images/meal-2-hearts.jpg" alt="Heart-shaped toast with strawberry yogurt, strawberries and bananas">
+    <img loading="lazy" decoding="async" src="images/meal-3-lunch.jpg" alt="Lunch trays with chicken, pita, rice, cucumber, tomatoes, tzatziki and blueberries">
+  </div>
+</div>
 
-							<h3>Stay connected</h3>
+<h3>Stay connected</h3>
 							<p>Even when you&rsquo;re apart, you&rsquo;ll never miss a moment. Through the parent app on your phone, tablet or computer, you&rsquo;ll receive real-time updates on meals, naps, diapers, play and more, often with photos. Automatic payments and year-end tax forms are right there too, so everything you need is in one place.</p>
 
 						</div>
@@ -183,217 +195,83 @@
 
 		</section>
 
-<section id="environment" class="work">
+<section class="hs-env" id="environment">
+  <h2>Environment</h2>
+  <p class="hs-env-sub">Center-quality materials in a warm, home setting.</p>
 
+  <h3>Spaces for discovery</h3>
+  <p>Every space at Healthy Start is chosen to bring the curriculum to life. A rich library supports each week’s themes, while letter and math materials give Literacy Launch and Math Milestones lessons a hands-on home. The light table, sensory bins and engineering toys turn Wild Wonders and Tinker Time into real investigation, and pretend play with a market and dress-up clothes lets children practice the friendships and routines at the heart of Caring Hearts and Healthy Habits.</p>
+  <div class="hs-env-photos">
+    <a class="popup-gallery" href="images/env-light-table.jpg"><img loading="lazy" decoding="async" src="images/env-light-table.jpg" alt="Light table with colorful letter pieces spelling &quot;let's play&quot;"></a>
+    <a class="popup-gallery" href="images/env-sensory-bin.jpg"><img loading="lazy" decoding="async" src="images/env-sensory-bin.jpg" alt="Bee-themed sensory bin with black beans, flowers and magnifying glasses"></a>
+    <a class="popup-gallery" href="images/env-number-puzzle.jpg"><img loading="lazy" decoding="async" src="images/env-number-puzzle.jpg" alt="Two children working a wooden number puzzle together"></a>
+  </div>
 
-		<!-- Title -->
-		<div class="row title">
-			<h2>Environment</h2>
-			<hr>
-		</div>
+  <p>Outside, a large, tree-shaded yard extends the learning. Children follow the seasons firsthand, from summer water play to winter sledding, while climbing, swinging and active games build the strength and confidence behind every movement activity.</p>
+  <div class="hs-env-photos">
+    <a class="popup-gallery" href="images/env-swing.jpg"><img loading="lazy" decoding="async" src="images/env-swing.jpg" alt="Four children sharing the saucer swing outside"></a>
+    <a class="popup-gallery" href="images/env-climbing-dome.jpg"><img loading="lazy" decoding="async" src="images/env-climbing-dome.jpg" alt="Four children climbing the dome climber in the yard"></a>
+    <a class="popup-gallery" href="images/env-water-play.jpg"><img loading="lazy" decoding="async" src="images/env-water-play.jpg" alt="Two children playing with the hose at the water table on a summer day"></a>
+  </div>
 
+  <h3>A place to grow together</h3>
+  <p>A family child care home offers something large centers can’t: the chance to grow up in one close, consistent setting. With the same caregiver year after year, children form a strong, nurturing bond, and that security gives them the confidence to branch out and try new things.</p>
+  <p>Mixed-age groups add to the feeling of family. Research shows these groups tend to be more cooperative and less competitive, as older children step into leadership and caregiving roles and younger children learn from their guidance and example. Layered activities let every child take part at their own level, side by side.</p>
+  <div class="hs-env-photos">
+    <a class="popup-gallery" href="images/env-balance-stones.jpg"><img loading="lazy" decoding="async" src="images/env-balance-stones.jpg" alt="Children of different ages crossing balance stones toward a play tunnel indoors"></a>
+    <a class="popup-gallery" href="images/env-fruit-sorting.jpg"><img loading="lazy" decoding="async" src="images/env-fruit-sorting.jpg" alt="Children sorting toy fruit by color into a pie with tongs"></a>
+    <a class="popup-gallery" href="images/env-volcano.jpg"><img loading="lazy" decoding="async" src="images/env-volcano.jpg" alt="A child pouring vinegar onto a baking soda volcano"></a>
+  </div>
 
-		<!-- Work slider -->
-		<div class="row relative">
-			<div class="work-slider">
+  <p>Above all, lasting, loving relationships are the heart of Healthy Start.</p>
+</section>
 
+<section class="hs-kw" id="kind-words">
+  <h2>Kind Words</h2>
+  <div class="hs-kw-track" id="testimonials" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Family testimonials">
 
-				<!-- Work item -->
-				<div class="grid-ms">
-					<div class="overlay-item">
-						<a class="popup-gallery" href="images/environment01.png">
-							<span class="o-hover">
-								<span>
-									<i class="fa fa-image fa-2x"></i>
-								</span>
-							</span>
-							<img src="images/environment01-thumb.png" alt="Play Area" class="responsive-img">
-						</a>
-					</div>
-				</div>
+    <div class="hs-kw-slide">
+      <blockquote class="hs-kw-q hs-kw-long">
+        <p>Jaimie at Healthy Start Childcare has been like a second home to our boys. We know that with her, our boys are safe and well cared for. She is incredibly communicative and provides great updates throughout the day. She prioritizes play and fun, while weaving in learning and instruction that has helped shape our boys into great kids. She truly treats the kids like they are her own, and that was so important to me as a mom who works full-time and wants her boys to feel love all day long. We love Ms. Jaimie!!</p>
+        <cite>Julia</cite>
+      </blockquote>
+    </div>
 
-				<!-- Work item -->
-				<div class="grid-ms">
-					<div class="overlay-item">
-						<a class="popup-gallery" href="images/environment02.png">
-							<span class="o-hover">
-								<span>
-									<i class="fa fa-image fa-2x"></i>
-								</span>
-							</span>
-							<img src="images/environment02-thumb.png" alt="Play Area" class="responsive-img">
-						</a>
-					</div>
-				</div>
+    <div class="hs-kw-slide hs-kw-group hs-kw-two">
+      <blockquote class="hs-kw-q"><p>Jaimie understands that little people have big emotions, which is exactly why my kids have grown to truly love her.</p><cite>Megan</cite></blockquote>
+      <blockquote class="hs-kw-q"><p>Leaving your children with Jaimie is like leaving them with family.</p><cite>Cory</cite></blockquote>
+    </div>
 
-				<!-- Work item -->
-				<div class="grid-ms">
-					<div class="overlay-item">
-						<a class="popup-gallery" href="images/environment03.png">
-							<span class="o-hover">
-								<span>
-									<i class="fa fa-image fa-2x"></i>
-								</span>
-							</span>
-							<img src="images/environment03-thumb.png" alt="Play Area" class="responsive-img">
-						</a>
-					</div>
-				</div>
+    <div class="hs-kw-slide">
+      <blockquote class="hs-kw-q hs-kw-long">
+        <p>The relationship with the parents is almost as important as the relationship with the kids, and Jaimie carefully developed trusting and mutually respectful relationships with my husband, my mother and with me. She shared the good from the day, and she also expressed any areas of concern. She did so without judgement, but rather with an approach of how do we address a certain behavior.</p>
+        <cite>Kirsten</cite>
+      </blockquote>
+    </div>
 
-				<!-- Work item -->
-				<div class="grid-ms">
-					<div class="overlay-item">
-						<a class="popup-gallery" href="images/environment04.png">
-							<span class="o-hover">
-								<span>
-									<i class="fa fa-image fa-2x"></i>
-								</span>
-							</span>
-							<img src="images/environment04-thumb.png" alt="Play Area" class="responsive-img">
-						</a>
-					</div>
-				</div>
+    <div class="hs-kw-slide hs-kw-group hs-kw-two">
+      <blockquote class="hs-kw-q"><p>My youngest has attended Healthy Start Childcare for two years, and we love it. Mrs. Jaimie offers a kind, welcoming, and structured space for my child to learn, grow, and play. I am so thankful we found this place!</p><cite>Karyn</cite></blockquote>
+      <blockquote class="hs-kw-q"><p>I see my grandchildren bravely choosing fairness, understanding, acceptance, consideration, alternate perspectives and truth. I know in my heart these tendencies are deeply instilled in them by Jaimie’s unwavering modeling of integrity, love and determination.</p><cite>Jeanne</cite></blockquote>
+    </div>
 
-				<!-- Work item -->
-				<div class="grid-ms">
-					<div class="overlay-item">
-						<a class="popup-gallery" href="images/environment05.png">
-							<span class="o-hover">
-								<span>
-									<i class="fa fa-image fa-2x"></i>
-								</span>
-							</span>
-							<img src="images/environment05-thumb.png" alt="Play Area" class="responsive-img">
-						</a>
-					</div>
-				</div>
-
-				<!-- Work item -->
-				<div class="grid-ms">
-					<div class="overlay-item">
-						<a class="popup-gallery" href="images/environment06.png">
-							<span class="o-hover">
-								<span>
-									<i class="fa fa-image fa-2x"></i>
-								</span>
-							</span>
-							<img src="images/environment06-thumb.png" alt="Play Area" class="responsive-img">
-						</a>
-					</div>
-				</div>
-
-				<!-- Work item -->
-				<div class="grid-ms">
-					<div class="overlay-item">
-						<a class="popup-gallery" href="images/environment07.jpg">
-							<span class="o-hover">
-								<span>
-									<i class="fa fa-image fa-2x"></i>
-								</span>
-							</span>
-							<img src="images/environment07-thumb.jpg" alt="Play Area" class="responsive-img">
-						</a>
-					</div>
-				</div>
-
-			</div>
-
-
-			<!-- Controls for the work slider -->
-			<button type="button" class="work-prev oc-left" aria-label="Previous environment photos"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-			<button type="button" class="work-next oc-right" aria-label="Next environment photos"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
-
-
-		</div>
-
-<div class="bg-white bg-padding envrionment-sub">
-
-		<div class="row">
-			<div class="eight col center text-center">
-				<h3>Center-quality materials in a warm, home setting.</h3>
-			</div>
-		</div>
-
-
-		<div class="row">
-				<div class="eight col center">
-					<h3>Spaces for discovery</h3>
-					<p>Every space at Healthy Start is chosen to bring the curriculum to life. A rich library supports each week&rsquo;s themes, while letter and math materials give Literacy Launch and Math Milestones lessons a hands-on home. The light table, sensory bins and engineering toys turn Wild Wonders and Tinker Time into real investigation, and pretend play with a market and dress-up clothes lets children practice the friendships and routines at the heart of Caring Hearts and Healthy Habits.</p>
-
-					<p>Outside, a large, tree-shaded yard extends the learning. Children follow the seasons firsthand, from summer water play to winter sledding, while climbing, swinging and active games build the strength and confidence behind every movement activity.</p>
-
-					<h3>A place to grow together</h3>
-					<p>A family child care home offers something large centers can&rsquo;t: the chance to grow up in one close, consistent setting. With the same caregiver year after year, children form a strong, nurturing bond, and that security gives them the confidence to branch out and try new things. Mixed-age groups add to the feeling of family. Research shows these groups tend to be more cooperative and less competitive, as older children step into leadership and caregiving roles and younger children learn from their guidance and example. Layered activities let every child take part at their own level, side by side. Above all, lasting, loving relationships are the heart of Healthy Start.</p>
-				</div>
-
-		</div>
-
-</div>
-
-
-	</section>
-
-<section id="kind-words" class="hs-kind-words">
-<div class="row title"><h2>Kind words</h2><hr></div>
-
-		<div class="row">
-			<div class="twelve col text-center qs-wrap">
-				<div class="bg-white bg-padding">
-					<div class="row">
-						<div class="eight col offset-by-two">
-							<ul class="quote-slider">
-
-								<!-- Quote -->
-								<li>
-									<h3 class="uber"><span class="serif">"I see my grandchildren bravely choosing fairness, understanding, acceptance, consideration, alternate perspectives and truth. I know in my heart these tendencies are deeply instilled in them by Jaimie’s unwavering modeling of integrity, love and determination."</span></h3>
-									<p>Jeanne H.</p>
-								</li>
-
-								<!-- Quote -->
-								<li>
-									<h3 class="uber"><span class="serif">"There are no words to express the appreciation we have for how you have loved our children."</span>
-										<span class="view-full"><a href="#kirsten" class="open-kirsten">View full testimonial</a></span></h3>
-									<p>Kirsten A.</p>
-								</li>
-
-								<!-- Quote -->
-								<li>
-									<h3 class="uber"><span class="serif">"Jaimie understands that little people have big emotions, which is exactly why my kids have grown to truly love her."</span></h3>
-									<p>Megan B.</p>
-								</li>
-
-								<!-- Quote -->
-								<li>
-									<h3 class="uber"><span class="serif">"Leaving your children with Jaimie <br>is like leaving them with family."</span></h3>
-									<p>Cory B.</p>
-								</li>
-
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="kirsten" class="white-popup mfp-hide">
-			<p>Jaimie was our babysitter for four years, and became part of our family during that time.   My children loved Jaimie like an aunt, and she consistently loved them and held them to the highest of expectations.   Jaimie's calm demeanor during every moment of the day provided a caring and warm environment for my children.  She brought creative projects, educational activities and a lot of fun to work every day.  When Jaimie babysits for us today, the kids scream with joy and ask every day "is today a Jaimie day?"   I know Jaimie will be invited to my children's weddings.</p>
-
-			<p>The relationship with the parents is almost as important as the relationship with the kids, and Jaimie carefully developed trusting and mutually respectful relationships with my husband, my mother and with me.   She shared the good from the day, and she also expressed any areas of concern.  She did so without judgement, but rather with an approach of how do we address a certain behavior. </p>
-
-			<p>If there was a crisis in our family, Jaimie would be the first person I would call to help with our children.  I would trust her to handle any situation, and I know my children would be loved.  Jaimie is forever part of our family, and I feel so blessed that Jaimie came into our lives.</p>
-			<p>- Kirsten A.</p>
-		</div>
-
-	</section>
+  </div>
+  <div class="hs-kw-nav">
+    <button type="button" class="hs-kw-arrow" data-dir="-1" aria-label="Previous testimonials" aria-controls="testimonials">&#8249;</button>
+    <div class="hs-kw-dots"></div>
+    <button type="button" class="hs-kw-arrow" data-dir="1" aria-label="Next testimonials" aria-controls="testimonials">&#8250;</button>
+  </div>
+</section>
 
 <section class="hs-cta" id="get-in-touch">
   <h2 class="hs-cta-title serif">Let's talk about your family.</h2>
   <p class="hs-cta-sub">Questions, tours or enrollment, I'd love to hear from you.</p>
-  <a class="hs-cta-btn scrollto" href="#contact">Get in touch</a>
+  <a class="hs-cta-btn scrollto" href="#contact" aria-controls="contact" aria-expanded="false">Get in Touch</a>
 </section>
 
-<section id="contact" class="contact" aria-labelledby="contact-heading" tabindex="-1">
+<section id="contact" class="contact" hidden aria-labelledby="contact-heading" tabindex="-1">
   <div class="row title"><h2 id="contact-heading">Contact</h2><hr></div>
   <div class="hs-contact-form">
+    <button type="button" class="hs-contact-close">Close form</button>
     <p class="hs-form-intro">Tell me a little about your family. I look forward to hearing from you.</p>
     <form id="inquiry-form" class="hs-inquiry-form" action="#contact" method="post" aria-describedby="form-required-note">
       <p id="form-required-note" class="hs-form-note">Name, email and message are required.</p>
@@ -482,7 +360,7 @@
 
 
 	<!-- Javascript -->
-	<script src="js/main.js?v=8"></script>
+	<script src="js/main.js?v=9"></script>
 
 </body>
 </html>
