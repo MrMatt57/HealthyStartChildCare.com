@@ -29,7 +29,7 @@ Upload `artifacts/Healthy-Start-staging.zip` to staging, or serve `dist/` locall
 
 The contact section contains a native HTML inquiry form styled with the site's existing fonts. It stays hidden until a visitor selects Schedule a Tour, Get in Touch, or Contact; a direct `#contact` link also reveals it. It replaces the former EngageBay embed, which returned HTTP 401 on the live site. The requested notification recipient is `jaimie@healthystartchildcare.com`.
 
-The Formspree account is accessible, and `jaimie@healthystartchildcare.com` has been added as a linked email. Recipient verification is pending; Formspree sent the verification link to Jaimie's inbox. Before production approval, verify that address, create a form with Jaimie as the notification recipient, and replace the inquiry form's `action="#contact"` with its `https://formspree.io/f/...` endpoint. Remove `disabled` from `#inquiry-submit` and update the temporary email note. Native POST submission supports the provider's spam checks and confirmation page. The preview currently keeps Send message disabled and provides a direct email link. No inquiry has been submitted.
+The inquiry form posts to `https://formspree.io/f/mzedwyre` (Healthy Start — Tour and Enrollment Inquiries). Jaimie's linked email address is verified, and the Formspree workflow emails `jaimie@healthystartchildcare.com` for each submission. Send message is enabled, with native required-field validation and a direct email alternative. Formspree provides spam filtering and its confirmation page after a successful submission. Manage submissions and notification settings in the [Formspree dashboard](https://formspree.io/forms/mzedwyre/submissions).
 
 ## Deployment
 
