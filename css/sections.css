@@ -4,7 +4,7 @@
 /* Computer: centered stack */
 .hs-title, .hs-tagline { position: absolute; left: 50%; transform: translateX(-50%); margin: 0; text-align: center; white-space: nowrap; }
 .hs-title {
-  bottom: 51%; color: #fff; font-size: max(44px, 6.8vw);   /* grows with the screen, no upper limit. Ends at Nate's hand; raise 6.8vw to widen */ line-height: 1.05; font-weight: 400;
+  bottom: 51%; color: #fff; font-size: max(44px, 9.5vw); line-height: 1.05; font-weight: 400;
   text-shadow: 0 0 3px rgba(30,18,8,.95), 0 0 10px rgba(30,18,8,.95), 0 0 22px rgba(30,18,8,.95), 0 2px 4px rgba(30,18,8,.95);
 }
 .hs-tagline {
@@ -171,6 +171,7 @@
 .hs-lightbox-prev, .hs-lightbox-next { position: absolute; top: calc(50% - 22px); }
 .hs-lightbox-prev { left: 4px; }
 .hs-lightbox-next { right: 4px; }
+a:focus-visible, button:focus-visible, .hs-kw-track:focus-visible { outline: 2px solid currentColor !important; outline-offset: 4px; }
 @media (max-width: 700px) {
   .hs-about-text h2 { font-size: 36px; }
   .hs-link-title { font-size: 30px; }
